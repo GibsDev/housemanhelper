@@ -116,7 +116,9 @@ function Message(message) {
 
 submit.addEventListener('click', () => {
     if (input.value.length > 0) {
-        httppost(new Message(input.value), '/list');
+        httppost(new Message(input.value), '/list', (res) => {
+            input.value = "";
+        });
     }
 })
 
