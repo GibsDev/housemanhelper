@@ -53,7 +53,7 @@
     flex-basis: 1;
     flex-grow: 1;
     white-space: pre-wrap;
-    border-left: 2px solid lightslategrey;
+    border-left: 1px solid lightslategrey;
     padding-left: 10px;
 }
 

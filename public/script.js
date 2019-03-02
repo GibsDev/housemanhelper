@@ -89,20 +89,24 @@ function housemanUpdated() {
     }
     list.innerHTML = '';
     for (let i = 0; i < housemanlist.value.length; i++) {
-        list.innerHTML += `<div><button id=${housemanlist.value[i].id}>X</button><p>${housemanlist.value[i].message}</p></div>`;
+        let message = housemanlist.value[i];
+        let check = (message.seen == true) ? "&#x2714️": "";
+        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check}</div>`;
         let div = list.lastChild;
         let button = div.firstChild;
     }
 }
 
 list.addEventListener('click', (click) => {
-    console.log('list clicked');
-    console.log(click.target);
     if (click.target.nodeName.toLowerCase() == 'button') {
-        httpdelete(getMessageById(click.target.id), "/list", (res) => {
+        httpdelete(getMessageById(click.target.parentNode.id), "/list", (res) => {
             let resjson = JSON.parse(res);
             console.log(`${resjson.id} has been deleted`);
         });
+    } else if (click.target.nodeName.toLowerCase() == 'p') {
+        let message = getMessageById(click.target.parentNode.id);
+        message.seen = !message.seen;
+        httppost(message, "/list");
     }
 });
 
@@ -110,7 +114,8 @@ function Message(message) {
     return {
         message: message,
         time: Date.now(),
-        id: MD5(message + this.time)
+        id: MD5(message + this.time),
+        seen: false
     }
 }
 

@@ -74,7 +74,13 @@ app.post('/list', jsonParser, (req, res) => {
     if (!req.body) return res.sendStatus(400);
     for (let i = 0; i < housemanlist.length; i++) {
         if (req.body.message == housemanlist[i].message) {
-            res.send('Tried to send duplicate message');
+            if (req.body.seen == housemanlist[i].seen) {
+                res.send('Tried to send duplicate message');
+                return;
+            }
+            housemanlist[i].seen = req.body.seen;
+            update();
+            res.send(JSON.stringify(housemanlist[i]));
             return;
         }
     }
