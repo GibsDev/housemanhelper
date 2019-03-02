@@ -4,6 +4,7 @@ const app = express();
 const port = 8080;
 
 const fs = require('fs');
+const crypto = require('crypto');
 
 var jsonParser = bodyParser.json();
 
@@ -67,31 +68,50 @@ app.get('/items', (req, res) => {
     });
 });
 
+function messageIndex(message) {
+    for (let i = 0; i < housemanlist.length; i++) {
+        if (message == housemanlist[i].message) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 /**
  * Used to post requests to the houseman list
  */
 app.post('/list', jsonParser, (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    for (let i = 0; i < housemanlist.length; i++) {
-        if (req.body.message == housemanlist[i].message) {
-            if (req.body.seen == housemanlist[i].seen) {
-                res.send('Tried to send duplicate message');
-                return;
-            }
-            housemanlist[i].seen = req.body.seen;
-            update();
-            res.send(JSON.stringify(housemanlist[i]));
-            return;
-        }
+    if (req.body.message == undefined) {
+        res.send('Invalid message object');
+        return;
     }
-    housemanlist.push(req.body);
+    let m = req.body.message;
+    if (messageIndex(m) != -1) {
+        res.send('Message already exists');
+        return;
+    }
+    let t = Date.now();
+    let md5sum = crypto.createHash('md5');
+    md5sum.update(`${m}${t}`)
+    let message = {
+        message: m,
+        time: t,
+        id: md5sum.digest('base64'),
+        seen: false
+    }
+    housemanlist.push(message);
     housemanlist.sort((a, b) => {return a.time - b.time});
     update();
-    res.send(req.body);
+    res.send(message.id);
 });
 
 app.delete('/list', jsonParser, (req, res) => {
     if (!req.body) return res.sendStatus(400);
+    if (req.body.id == undefined) {
+        res.send('No id provided');
+        return;
+    }
     for (let i = 0; i < housemanlist.length; i++) {
         if (req.body.id == housemanlist[i].id) {
             housemanlist.splice(i, 1);
@@ -99,7 +119,19 @@ app.delete('/list', jsonParser, (req, res) => {
         }
     }
     update();
-    res.send(req.body);
+    res.send(req.body.id);
+});
+
+app.patch('/list', jsonParser, (req, res) => {
+    if (!req.body) return res.sendStatus(400);
+    for (let i = 0; i < housemanlist.length; i++) {
+        if (req.body.id == housemanlist[i].id) {
+            housemanlist[i] = req.body;
+            update();
+            res.send(JSON.stringify(housemanlist[i].id));
+            return;
+        }
+    }
 });
 
 /**
