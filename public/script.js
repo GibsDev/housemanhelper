@@ -68,8 +68,11 @@ function housemanUpdated() {
     list.innerHTML = '';
     for (let i = 0; i < housemanlist.value.length; i++) {
         let message = housemanlist.value[i];
-        let check = (message.seen) ? '&#x2714️': '';
-        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check}</div>`;
+        let check = (message.seen) ? '&#x2714️' : '';
+        let time = new Date(message.time).toLocaleTimeString();
+        let ttime = time.substring(0, time.length - 6);
+        ttime += time.substring(time.length - 3);
+        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check} ${ttime}</div>`;
         let div = list.lastChild;
         let button = div.firstChild;
     }
