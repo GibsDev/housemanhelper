@@ -101,7 +101,3 @@ submit.addEventListener('click', () => {
         });
     }
 })
-
-function log(str) {
-    console.log(str);
-}

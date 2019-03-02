@@ -144,14 +144,6 @@ app.use(express.static('public'));
  */
 app.listen(port, () => console.log(`Listeneing on port ${port}`));
 
-/**
- * Used as a mechanism to set off an event for testing
- */
-/*
-setInterval(() => {
-    update();
-}, 1000);
-*/
 function update() {
     events.emit('update', 'housemanlist', housemanlist);
 }
