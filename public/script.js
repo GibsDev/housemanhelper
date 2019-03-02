@@ -2,6 +2,7 @@ let list = document.getElementById('list');
 let menu = document.getElementById('menu');
 let input = document.getElementById('input');
 let submit = document.getElementById('submit');
+let refresh = document.getElementById('refresh');
 let events = new EventSource('/events');
 
 function http(method, url, object, callback) {
@@ -101,3 +102,9 @@ submit.addEventListener('click', () => {
         });
     }
 })
+
+refresh.addEventListener('click', () => {
+    http('GET', '/list', null, (data) => {
+        housemanlist.value = JSON.parse(data);
+    });
+});

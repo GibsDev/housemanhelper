@@ -66,3 +66,7 @@
     font-weight: bold;
     border: none;
 }
+
+div#refresh {
+    display: inline-block;
+}
