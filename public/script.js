@@ -72,7 +72,7 @@ function housemanUpdated() {
         let time = new Date(message.time).toLocaleTimeString();
         let ttime = time.substring(0, time.length - 6);
         ttime += time.substring(time.length - 3);
-        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check} ${ttime}</div>`;
+        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check} <b>${ttime}</b></div>`;
         let div = list.lastChild;
         let button = div.firstChild;
     }
