@@ -1,11 +1,30 @@
-const auth = require('express').Router();
+const router = require('express').Router();
 
-auth.get('/', (req, res) => {
-    console.log(req.headers.cookie);
-    // TODO validate username and password
-    let token = '<asdf>';
-    res.cookie('token', token, { httpOnly: true });
-    res.send('Hello from root of auth');
+let username = 'curtis';
+let password = 'toast';
+
+let accessToken = 'thisistheonlyvalidtoken';
+
+router.post('/login', (req, res) => {
+    if (!(req.body.username == username
+        && req.body.password == password)) {
+            res.status(400).send('Invalid username and password');
+            return;
+    }
+    res.cookie('token', accessToken, { httpOnly: true });
+    res.send('Successfully authenticated user: ' + req.body.username);
 });
 
-module.exports = auth;
+function authenticate (req, res, next) {
+    if (!req.cookies) return;
+    if (req.cookies.token != accessToken) {
+        res.redirect('/login');
+        return;
+    }
+    next();
+}
+
+module.exports = {
+    router: router,
+    middleware: authenticate
+};

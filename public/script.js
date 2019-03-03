@@ -8,15 +8,14 @@ let events = new EventSource('/api/sse');
 function http(method, url, object, callback) {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState == 4) {
             if (callback) {
-                callback(this.responseText);
+                callback(xhttp);
             }
         }
     };
     xhttp.open(method, url, true);
-    let meth = method.toLowerCase();
-    if (meth == 'delete' || meth == 'post' || meth == 'patch') {
+    if (object) {
         xhttp.setRequestHeader('Content-type', 'application/json');
         xhttp.send(JSON.stringify(object));
     } else {
@@ -40,18 +39,28 @@ events.addEventListener('list', (event) => {
     housemanlist.value = JSON.parse(event.data);
 });
 
-/**
- * Get the initial state of the houseman list
- */
-http('GET', '/api/list', null, (data) => {
-    housemanlist.value = JSON.parse(data);
-});
-
 let ITEMS;
 
-http('GET', '/api/items', null, (data) => {
-    ITEMS = JSON.parse(data);
+/**
+ * Try to login
+ */
+http('POST', '/api/auth/login', {username: 'curtis', password: 'toast'}, (res) => {
+    console.log(res.responseText);
+    if (res.status != 200) {
+        return;
+    }
+    /**
+     * Get the initial state of the houseman list
+     */
+    http('GET', '/api/list', null, (data) => {
+        housemanlist.value = JSON.parse(data.responseText);
+    });
+
+    http('GET', '/api/items', null, (data) => {
+        ITEMS = JSON.parse(data.responseText);
+    });
 });
+
 
 function getMessageById(id) {
     for (let i = 0; i < housemanlist.value.length; i++) {
@@ -82,14 +91,14 @@ function housemanUpdated() {
 list.addEventListener('click', (click) => {
     if (click.target.nodeName.toLowerCase() == 'button') {
         http('DELETE', '/api/list', getMessageById(click.target.parentNode.id), (res) => {
-            console.log('DELETE: ' + res);
+            console.log('DELETE: ' + res.responseText);
         });
     } else if (click.target.nodeName.toLowerCase() == 'p') {
         let message = getMessageById(click.target.parentNode.id);
         if (message == undefined) return;
         message.seen = !message.seen;
         http('PATCH', '/api/list', message, (res) => {
-            console.log('PATCH: ' + res);
+            console.log('PATCH: ' + res.responseText);
         });
     }
 });
@@ -97,7 +106,7 @@ list.addEventListener('click', (click) => {
 submit.addEventListener('click', () => {
     if (input.value.length > 0) {
         http('POST', '/api/list', { message: input.value }, (res) => {
-            console.log('POST: ' + res);
+            console.log('POST: ' + res.responseText);
             input.value = '';
         });
     }
@@ -105,6 +114,6 @@ submit.addEventListener('click', () => {
 
 refresh.addEventListener('click', () => {
     http('GET', '/api/list', null, (data) => {
-        housemanlist.value = JSON.parse(data);
+        housemanlist.value = JSON.parse(data.responseText);
     });
 });

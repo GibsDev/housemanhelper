@@ -1,5 +1,13 @@
 const api = require('express').Router();
+const cookieParser = require('cookie-parser');
 const state = require('./state.js');
+
+/**
+ * Create the route for auth calls
+ */
+const auth = require('./authentication.js');
+api.use('/auth', auth.router);
+api.all('*', auth.middleware);
 
 const fs = require('fs');
 const crypto = require('crypto');
@@ -57,7 +65,7 @@ api.get('/items', (req, res) => {
  */
 api.post('/list', (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    if (req.body.message == undefined) {
+    if (!req.body.message) {
         res.send('Invalid message object');
         return;
     }
