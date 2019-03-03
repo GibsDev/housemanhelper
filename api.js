@@ -109,7 +109,7 @@ api.patch('/list', (req, res) => {
     for (let i = 0; i < state.list.length; i++) {
         if (req.body.id == state.list[i].id) {
             state.list[i] = req.body;
-            res.send(JSON.stringify(state.list[i].id));
+            res.send(state.list[i].id);
             state.notifyListeners();
             return;
         }
