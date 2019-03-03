@@ -1,6 +1,6 @@
-const router = require('express').router();
+const auth = require('express').router();
 
-router.get('/', (req, res) => {
+auth.get('/', (req, res) => {
     console.log(req.headers.cookie);
     // TODO validate username and password
     let token = '<asdf>';
@@ -8,4 +8,4 @@ router.get('/', (req, res) => {
     res.sendFile('Hello from root of auth');
 });
 
-module.exports = router;
+module.exports = auth;
