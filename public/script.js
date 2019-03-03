@@ -3,7 +3,7 @@ let menu = document.getElementById('menu');
 let input = document.getElementById('input');
 let submit = document.getElementById('submit');
 let refresh = document.getElementById('refresh');
-let events = new EventSource('/events');
+let events = new EventSource('/api/sse');
 
 function http(method, url, object, callback) {
     let xhttp = new XMLHttpRequest();
@@ -35,7 +35,7 @@ let housemanlist = {
     }
 };
 
-events.addEventListener('housemanlist', (event) => {
+events.addEventListener('list', (event) => {
     // Calls the setter for value
     housemanlist.value = JSON.parse(event.data);
 });
@@ -43,13 +43,13 @@ events.addEventListener('housemanlist', (event) => {
 /**
  * Get the initial state of the houseman list
  */
-http('GET', '/list', null, (data) => {
+http('GET', '/api/list', null, (data) => {
     housemanlist.value = JSON.parse(data);
 });
 
 let ITEMS;
 
-http('GET', '/items', null, (data) => {
+http('GET', '/api/items', null, (data) => {
     ITEMS = JSON.parse(data);
 });
 
@@ -81,14 +81,14 @@ function housemanUpdated() {
 
 list.addEventListener('click', (click) => {
     if (click.target.nodeName.toLowerCase() == 'button') {
-        http('DELETE', '/list', getMessageById(click.target.parentNode.id), (res) => {
+        http('DELETE', '/api/list', getMessageById(click.target.parentNode.id), (res) => {
             console.log('DELETE: ' + res);
         });
     } else if (click.target.nodeName.toLowerCase() == 'p') {
         let message = getMessageById(click.target.parentNode.id);
         if (message == undefined) return;
         message.seen = !message.seen;
-        http('PATCH', '/list', message, (res) => {
+        http('PATCH', '/api/list', message, (res) => {
             console.log('PATCH: ' + res);
         });
     }
@@ -96,7 +96,7 @@ list.addEventListener('click', (click) => {
 
 submit.addEventListener('click', () => {
     if (input.value.length > 0) {
-        http('POST', '/list', { message: input.value }, (res) => {
+        http('POST', '/api/list', { message: input.value }, (res) => {
             console.log('POST: ' + res);
             input.value = '';
         });
@@ -104,7 +104,7 @@ submit.addEventListener('click', () => {
 })
 
 refresh.addEventListener('click', () => {
-    http('GET', '/list', null, (data) => {
+    http('GET', '/api/list', null, (data) => {
         housemanlist.value = JSON.parse(data);
     });
 });
