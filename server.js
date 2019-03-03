@@ -135,6 +135,14 @@ app.patch('/list', jsonParser, (req, res) => {
     }
 });
 
+app.get('/auth', (req, res) => {
+    console.log(req.header);
+    // TODO validate username and password
+    let token = '<a jwt token>'
+    //res.setHeader('Set-Cookie', 'token=' + token);
+    res.send('You now have a token cookie: ' + token);
+});
+
 /**
  * Serve client side html code from the client directory
  */
