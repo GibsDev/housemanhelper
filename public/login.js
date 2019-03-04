@@ -14,7 +14,7 @@ button.addEventListener('click', () => {
         if (res.status == 200) {
             window.location.href = '/';
         } else {
-            warn1.style.display = 'block';
+            warn1.style.display = 'table-row';
         }
         console.log(res.responseText);
         button.style.visibility = 'visible';

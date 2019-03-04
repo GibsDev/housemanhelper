@@ -15,17 +15,17 @@ button.addEventListener('click', () => {
         || password.value.length == 0
         || password .value.length == 0) {
         console.log('Make sure all fields are filled out');
-        warn1.style.display = 'block';
+        warn1.style.display = 'table-row';
         return;
     }
     if (password.value != password2.value) {
         console.log('Make sure passwords match');
-        warn2.style.display = 'block';
+        warn2.style.display = 'table-row';
         return;
     }
     if (password.value.length < 6) {
         console.log('please use a longer password');
-        warn3.style.display = 'block';
+        warn3.style.display = 'table-row';
         return;
     }
     button.style.visibility = 'hidden';
