@@ -5,24 +5,6 @@ let submit = document.getElementById('submit');
 let refresh = document.getElementById('refresh');
 let events = new EventSource('/api/sse');
 
-function http(method, url, object, callback) {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            if (callback) {
-                callback(xhttp);
-            }
-        }
-    };
-    xhttp.open(method, url, true);
-    if (object) {
-        xhttp.setRequestHeader('Content-type', 'application/json');
-        xhttp.send(JSON.stringify(object));
-    } else {
-        xhttp.send();
-    }
-}
-
 let housemanlist = {
     _value: [],
     set value(val) {
@@ -42,23 +24,16 @@ events.addEventListener('list', (event) => {
 let ITEMS;
 
 /**
- * Try to login
+ * Get the initial state of the houseman list
  */
-http('POST', '/api/auth/login', {username: 'curtis', password: 'toast'}, (res) => {
-    console.log(res.responseText);
-    if (res.status != 200) {
-        return;
-    }
-    /**
-     * Get the initial state of the houseman list
-     */
-    http('GET', '/api/list', null, (data) => {
-        housemanlist.value = JSON.parse(data.responseText);
-    });
+http('GET', '/api/list', null, (data) => {
+    // TODO redirect to login screen if unauthenticated
+    housemanlist.value = JSON.parse(data.responseText);
+});
 
-    http('GET', '/api/items', null, (data) => {
-        ITEMS = JSON.parse(data.responseText);
-    });
+http('GET', '/api/items', null, (data) => {
+    // TODO redirect to login screen if unauthenticated
+    ITEMS = JSON.parse(data.responseText);
 });
 
 

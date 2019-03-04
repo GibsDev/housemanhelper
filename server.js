@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 // HTTPS
-const port = 8080;
+const port = 443;
 
 /**
  * Parse all JSON into the req.body object

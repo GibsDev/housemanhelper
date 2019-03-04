@@ -15,11 +15,18 @@ router.post('/login', (req, res) => {
     res.send('Successfully authenticated user: ' + req.body.username);
 });
 
+router.post('/signup', (req, res) => {
+    // TODO
+    res.send('Login!');
+});
+
 function authenticate (req, res, next) {
-    if (!req.cookies) return;
-    if (req.cookies.token != accessToken) {
-        res.redirect('/login');
-        return;
+    if (req.path != '/signup' && req.path != '/login') {
+        if (!req.cookies) return;
+        if (req.cookies.token != accessToken) {
+            res.redirect('/login');
+            return;
+        }
     }
     next();
 }

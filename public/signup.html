@@ -3,11 +3,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon" href="/hh.png"/>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <title>Login</title>
+        <title>Create an account</title>
     </head>
     <body>
         <div id="content">
-            <h1>Login:</h1>
+            <h1>Create a new account:</h1>
             <table id="logintable">
                 <tr>
                     <td>Username: </td>
@@ -18,14 +18,24 @@
                     <td><input type="password" id="password"></td>
                 </tr>
                 <tr>
-                    <td colspan="2"><button id="userpassbutton">Login</button></td>
+                    <td>Confirm password: </td>
+                    <td><input type="password" id="password2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button id="userpassbutton">Sign Up</button></td>
                 </tr>
                 <tr style="display: none;" id="warn1">
-                    <td colspan="2"><p>Invalid username and password</p></td>
+                    <td colspan="2"><p>Make sure all fields are filled out</p></td>
+                </tr>
+                <tr style="display: none;" id="warn2">
+                    <td colspan="2"><p>Make sure passwords match</p></td>
+                </tr>
+                <tr style="display: none;" id="warn3">
+                    <td colspan="2"><p>Password must be a at least 6 characters</p></td>
                 </tr>
             </table>
         </div>
     </body>
     <script src="utils.js"></script>
-    <script src="login.js"></script>
+    <script src="signup.js"></script>
 </html>
