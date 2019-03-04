@@ -26,14 +26,21 @@ let ITEMS;
 /**
  * Get the initial state of the houseman list
  */
-http('GET', '/api/list', null, (data) => {
-    // TODO redirect to login screen if unauthenticated
-    housemanlist.value = JSON.parse(data.responseText);
+http('GET', '/api/list', null, (res) => {
+    console.log(res.status);
+    if (res.status == 401) {
+        window.location.href = '/login';
+        return;
+    }
+    housemanlist.value = JSON.parse(res.responseText);
 });
 
-http('GET', '/api/items', null, (data) => {
-    // TODO redirect to login screen if unauthenticated
-    ITEMS = JSON.parse(data.responseText);
+http('GET', '/api/items', null, (res) => {
+    if (res.status == 401) {
+        window.location.href = '/login';
+        return;
+    }
+    ITEMS = JSON.parse(res.responseText);
 });
 
 

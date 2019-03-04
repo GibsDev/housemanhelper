@@ -23,8 +23,9 @@ router.post('/signup', (req, res) => {
 function authenticate (req, res, next) {
     if (req.path != '/signup' && req.path != '/login') {
         if (!req.cookies) return;
+        // TODO make an actual check for real auth token
         if (req.cookies.token != accessToken) {
-            res.redirect('/login');
+            res.status(401).send('/login');
             return;
         }
     }
