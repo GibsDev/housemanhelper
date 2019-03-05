@@ -46,7 +46,7 @@ http('GET', '/api/items', null, (res) => {
 
 function getMessageById(id) {
     for (let i = 0; i < housemanlist.value.length; i++) {
-        if (housemanlist.value[i].id == id) {
+        if (housemanlist.value[i]._id == id) {
             return housemanlist.value[i];
         }
     }
@@ -64,7 +64,7 @@ function housemanUpdated() {
         let time = new Date(message.time).toLocaleTimeString();
         let ttime = time.substring(0, time.length - 6);
         ttime += time.substring(time.length - 3);
-        list.innerHTML += `<div id=${message.id}><button>X</button><p>${message.message}</p>${check} <b>${ttime}</b></div>`;
+        list.innerHTML += `<div id=${message._id}><button>X</button><p>${message.message}</p>${check} <b>${ttime}</b></div>`;
         let div = list.lastChild;
         let button = div.firstChild;
     }

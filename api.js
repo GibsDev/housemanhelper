@@ -5,7 +5,20 @@ const state = require('./state.js');
 let idCounter = getRandomInt(0, 0xFFFFFF + 1);
 
 /**
- * Uses the same algorithm as MongoDB to generate a UID
+ * Uses the same algorithm as MongoDB to generate a Likely-UID:
+ * 
+ * We do not check for collisions for this implementation. While
+ * it is incredibly unlikely (near impossible) that we will
+ * get id collisions, it is still technically possible, but the
+ * effects of a collision on a single post to the list is not
+ * catastrophic. The whole point of using this type of id
+ * generation was to prep for a potential migration to a MongoDB
+ * database, where the collisions would be handled.
+ * 
+ * a 4-byte value representing the seconds since the Unix epoch,
+ * a 5-byte random value, and
+ * a 3-byte counter, starting with a random value.
+ * 
  * @param {Date} time 
  */
 function getNextID(time) {
@@ -31,6 +44,7 @@ function getNextID(time) {
 
 /**
  * Helper function to generate random numbers for getNextID
+ * 
  * @param {Number} min inclusive min
  * @param {Number} max exclusive max
  * @returns A random int between two numbers
@@ -114,12 +128,12 @@ api.post('/list', (req, res) => {
     let message = {
         message: m,
         time: t,
-        id: getNextID(t),
+        _id: getNextID(t),
         seen: false
     }
     state.list.push(message);
     state.list.sort((a, b) => {return a.time - b.time});
-    res.send(message.id);
+    res.send(message._id);
     state.notifyListeners();
 });
 
@@ -128,17 +142,17 @@ api.post('/list', (req, res) => {
  */
 api.delete('/list', (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    if (req.body.id == undefined) {
+    if (req.body._id == undefined) {
         res.send('No id provided');
         return;
     }
     for (let i = 0; i < state.list.length; i++) {
-        if (req.body.id == state.list[i].id) {
+        if (req.body._id == state.list[i]._id) {
             state.list.splice(i, 1);
             break;
         }
     }
-    res.send(req.body.id);
+    res.send(req.body._id);
     state.notifyListeners();
 });
 
@@ -148,9 +162,9 @@ api.delete('/list', (req, res) => {
 api.patch('/list', (req, res) => {
     if (!req.body) return res.sendStatus(400);
     for (let i = 0; i < state.list.length; i++) {
-        if (req.body.id == state.list[i].id) {
+        if (req.body._id == state.list[i]._id) {
             state.list[i] = req.body;
-            res.send(state.list[i].id);
+            res.send(state.list[i]._id);
             state.notifyListeners();
             return;
         }
