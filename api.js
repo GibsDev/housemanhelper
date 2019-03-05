@@ -2,6 +2,43 @@ const api = require('express').Router();
 const cookieParser = require('cookie-parser');
 const state = require('./state.js');
 
+let idCounter = getRandomInt(0, 0xFFFFFF + 1);
+
+/**
+ * Uses the same algorithm as MongoDB to generate a UID
+ * @param {Date} time 
+ */
+function getNextID(time) {
+    // Convert time to seconds since Unix 0
+    time = Math.floor(time/1000);
+    let id = Buffer.alloc(12);
+    id.writeInt32BE(time);
+    // 5 random bytes
+    id.writeUInt8(getRandomInt(0, 0xFF + 1), 4);
+    id.writeUInt8(getRandomInt(0, 0xFF + 1), 5);
+    id.writeUInt8(getRandomInt(0, 0xFF + 1), 6);
+    id.writeUInt8(getRandomInt(0, 0xFF + 1), 7);
+    id.writeUInt8(getRandomInt(0, 0xFF + 1), 8);
+    // Incremental counter that starts at a random value (when server starts)
+    id.writeUIntBE(idCounter, 9, 3);
+    // Increment and wrap counter
+    idCounter++;
+    if (idCounter > 0xFFFFFF) {
+        idCounter = 0;
+    }
+    return id.toString('hex');
+}
+
+/**
+ * Helper function to generate random numbers for getNextID
+ * @param {Number} min inclusive min
+ * @param {Number} max exclusive max
+ * @returns A random int between two numbers
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 /**
  * Create the route for auth calls
  */
@@ -10,7 +47,6 @@ api.use('/auth', auth.router);
 api.all('*', auth.middleware);
 
 const fs = require('fs');
-const crypto = require('crypto');
 
 /**
  * Allows a client to subscribe to receive server side events
@@ -74,14 +110,11 @@ api.post('/list', (req, res) => {
         res.send('Message already exists');
         return;
     }
-    // TODO change the id creation?
     let t = Date.now();
-    let md5sum = crypto.createHash('md5');
-    md5sum.update(`${m}${t}`)
     let message = {
         message: m,
         time: t,
-        id: md5sum.digest('base64'),
+        id: getNextID(t),
         seen: false
     }
     state.list.push(message);
