@@ -1,6 +1,6 @@
 const api = require('express').Router();
-const cookieParser = require('cookie-parser');
 const state = require('./state.js');
+const sanitizeHtml = require('sanitize-html');
 
 let idCounter = getRandomInt(0, 0xFFFFFF + 1);
 
@@ -120,6 +120,7 @@ api.post('/list', (req, res) => {
         return;
     }
     let m = req.body.message;
+    m = sanitizeHtml(m);
     if (state.getIndex(m) != -1) {
         res.send('Message already exists');
         return;

@@ -14,7 +14,7 @@ router.post('/login', (req, res) => {
         res.status(400).send('Invalid login request');
         return;
     }
-    if (users[req.body.username].password != passwordHash(req.body.password)) {
+    if (!users[req.body.username] || users[req.body.username].password != passwordHash(req.body.password)) {
             res.status(400).send('Invalid username or password');
             return;
     }
@@ -62,7 +62,7 @@ function authenticate (req, res, next) {
         next();
         return;
     } else {
-        if (req.cookies) {
+        if (req.cookies && req.cookies.token) {
             let decoded = jwt.verify(req.cookies.token, PRIVATE_KEY);
             if (accessTokens[decoded.username] != undefined) {
                 next();
