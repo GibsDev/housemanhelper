@@ -5,10 +5,20 @@ const jsonfile = require('jsonfile');
 
 const PRIVATE_KEY = 'wwmNZPkPw9zUNVpY3kbc22c5YQCmYwkNRLpJGAcyQ7jpKXyXFtkL9hTxy75WLN2u';
 
+/**
+ * Contains all of the username password pairs
+ */
 let users = jsonfile.readFileSync('users.json');
 
+/**
+ * Contains all of the current access tokens for users
+ */
 let accessTokens = {};
 
+/**
+ * Used for obtaining a jwt access token that is stored in
+ * a httponly cookie
+ */
 router.post('/login', (req, res) => {
     if (!isValidUserObject(req.body)) {
         res.status(400).send('Invalid login request');
@@ -29,6 +39,9 @@ router.post('/login', (req, res) => {
     });
 });
 
+/**
+ * Used for creating an account
+ */
 router.post('/signup', (req, res) => {
     if (isValidUserObject(req.body)) {
         // Add user entry into users dictionary
@@ -42,10 +55,20 @@ router.post('/signup', (req, res) => {
     res.status(400).send('Unable to create account');
 });
 
+/**
+ * Generates a hash of the given password for storage
+ * 
+ * @param {*} password 
+ */
 function passwordHash(password) {
     return crypto.createHash('sha256').update(password).digest('base64');
 }
 
+/**
+ * Helper function to verify incoming user objects are usable
+ * 
+ * @param {*} user 
+ */
 function isValidUserObject(user) {
     return user.username != undefined
     && user.password != undefined
@@ -57,6 +80,14 @@ function isValidUserObject(user) {
     && user.password.length > 0;
 }
 
+/**
+ * Middleware function that checks all requests to the api
+ * have valid jwt tokens
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 function authenticate (req, res, next) {
     if (req.path == '/signup' || req.path == '/login') {
         next();
