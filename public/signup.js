@@ -28,11 +28,13 @@ button.addEventListener('click', () => {
         warn3.style.display = 'table-row';
         return;
     }
+    let u = username.value;
+    let p = password.value;
     button.style.visibility = 'hidden';
     username.value = '';
     password.value = '';
     password2.value = '';
-    http('POST', '/api/auth/signup', {}, (res) => {
+    http('POST', '/api/auth/signup', { username: u, password: p }, (res) => {
         if (res.status == 200) {
             window.location.href = '/login';
         }

@@ -6,7 +6,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.4",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "jsonfile": "^5.0.0",
+    "jsonwebtoken": "^8.5.0"
   },
   "devDependencies": {},
   "scripts": {
