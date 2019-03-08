@@ -21,11 +21,12 @@ function login() {
     });
 }
 
-button.addEventListener('click', login);
-
-password.addEventListener('keydown', (e) => {
-    console.log('asdfasdf');
-    if(e.keyCode == 13){
+function enterkey(e) {
+    if (e.keyCode == 13) {
         login();
     }
-});
+}
+
+button.addEventListener('click', login);
+username.addEventListener('keydown', enterkey);
+password.addEventListener('keydown', enterkey);

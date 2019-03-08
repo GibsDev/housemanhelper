@@ -7,13 +7,13 @@ let warn1 = document.getElementById('warn1');
 let warn2 = document.getElementById('warn2');
 let warn3 = document.getElementById('warn3');
 
-button.addEventListener('click', () => {
+function signup(){
     warn1.style.display = 'none';
     warn2.style.display = 'none';
     warn3.style.display = 'none';
     if (username.value.length == 0
         || password.value.length == 0
-        || password .value.length == 0) {
+        || password.value.length == 0) {
         console.log('Make sure all fields are filled out');
         warn1.style.display = 'table-row';
         return;
@@ -41,4 +41,15 @@ button.addEventListener('click', () => {
         console.log(res.responseText);
         button.style.visibility = 'visible';
     });
-});
+}
+
+function enterkey(e) {
+    if (e.keyCode == 13) {
+        signup();
+    }
+}
+
+button.addEventListener('click', signup);
+username.addEventListener('keydown', enterkey);
+password1.addEventListener('keydown', enterkey);
+password2.addEventListener('keydown', enterkey);
