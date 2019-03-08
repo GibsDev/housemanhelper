@@ -24,8 +24,8 @@ app.use(express.static('public', { extensions:['html'] }));
 
 /*
 const options = {
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
+	key: fs.readFileSync('server.key'),
+	cert: fs.readFileSync('server.cert')
 }
 */
 
@@ -35,7 +35,7 @@ const options = {
 app.listen(port, () => console.log(`Listeneing on port ${port}`));
 /*
 https.createServer(options, app).listen(port, function () {
-        console.log(`Listeneing on port ${port}`)
-    }
+		console.log(`Listeneing on port ${port}`)
+	}
 );
 */

@@ -1,49 +1,49 @@
 {
-    "linen": [
-        "king sheet set",
-        "queen sheet set",
-        "full sheet set",
-        "king blanket",
-        "full/queen blanket"
-    ],
-    "towels": [
-        "big towel",
-        "bathmat",
-        "facecloth",
-        "kitchen towel",
-        "hand towel",
-        "black facecloth",
-        "pool towel"
-    ],
-    "kitchenware": [
-        "wine glass",
-        "plastic cup",
-        "tall glass",
-        "steak knife",
-        "butter knife",
-        "large plate",
-        "small plate",
-        "small fork",
-        "large fork",
-        "small spoon",
-        "large spoon",
-        "lobster pick",
-        "large glass bowl",
-        "small glass bowl"
-    ],
-    "appliances": [
-        "blender",
-        "tea kettle",
-        "electric skillet",
-        "large electric skillet",
-        "induction cooker"
-    ],
-    "other": [
-        "stain removal",
-        "odor removal",
-        "robes",
-        "cot",
-        "pack and play",
-        "high chair"
-    ]
+	"linen": [
+		"king sheet set",
+		"queen sheet set",
+		"full sheet set",
+		"king blanket",
+		"full/queen blanket"
+	],
+	"towels": [
+		"big towel",
+		"bathmat",
+		"facecloth",
+		"kitchen towel",
+		"hand towel",
+		"black facecloth",
+		"pool towel"
+	],
+	"kitchenware": [
+		"wine glass",
+		"plastic cup",
+		"tall glass",
+		"steak knife",
+		"butter knife",
+		"large plate",
+		"small plate",
+		"small fork",
+		"large fork",
+		"small spoon",
+		"large spoon",
+		"lobster pick",
+		"large glass bowl",
+		"small glass bowl"
+	],
+	"appliances": [
+		"blender",
+		"tea kettle",
+		"electric skillet",
+		"large electric skillet",
+		"induction cooker"
+	],
+	"other": [
+		"stain removal",
+		"odor removal",
+		"robes",
+		"cot",
+		"pack and play",
+		"high chair"
+	]
 }
