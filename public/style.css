@@ -88,11 +88,16 @@ table#logintable {
     border-radius: 4px;
 }
 
-table#logintable td {
+table#logintable tr > td {
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+table#logintable tr:last-child > td {
     padding: 10px;
 }
 
-#userpassbutton {
+.userpassbutton {
     padding: 10px;
     width: 100%;
     color: white;
@@ -102,7 +107,9 @@ table#logintable td {
 }
 
 table#logintable input {
-    padding: 2px;
+    border: 1px solid grey;
+    border-radius: 2px;
+    padding: 4px;
 }
 
 table#logintable p {
