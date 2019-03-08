@@ -3,7 +3,7 @@ let username = document.getElementById('username');
 let password = document.getElementById('password');
 let warn1 = document.getElementById('warn1');
 
-button.addEventListener('click', () => {
+function login() {
     warn1.style.display = 'none';
     button.style.visibility = 'hidden';
     let user = username.value;
@@ -19,4 +19,13 @@ button.addEventListener('click', () => {
         console.log(res.responseText);
         button.style.visibility = 'visible';
     });
+}
+
+button.addEventListener('click', login);
+
+password.addEventListener('keydown', (e) => {
+    console.log('asdfasdf');
+    if(e.keyCode == 13){
+        login();
+    }
 });
