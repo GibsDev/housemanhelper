@@ -1,4 +1,4 @@
-function http(method, url, object, callback) {
+export function http(method, url, object, callback) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4) {
